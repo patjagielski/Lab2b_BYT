@@ -2,37 +2,41 @@
 // one file for convenience.  Imagine them as non-test methods in separate 
 // client classes.
 
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 import java.io.*;
 
+import static org.junit.Assert.assertEquals;
+
 public class PersonClientsTest {
+	/**
+	 * Each test case should test one method/functionality
+	 * So we will create 4 test cases for Person
+	 */
+	Person person = new Person("Jagielski", "Patrik", "TimothyTomTOm");
 
 	@Test
-	public void testClients() throws IOException {
-		Person bobSmith = new Person("Smith", "Bob", null);
-		Person jennyJJones = new Person("Jones", "Jenny", "J");
-
+	public void testPrintPerson() throws IOException {
 		StringWriter out = new StringWriter();
-		Client1.printPerson(out, bobSmith);
-		assertEquals("Bob Smith", out.toString());
-
-		out = new StringWriter();
-		Client1.printPerson(out, jennyJJones);
-		assertEquals("Jenny J Jones", out.toString());
-
-		assertEquals("Smith, Bob", Client2.formatPerson(bobSmith));
-		assertEquals("Jones, Jenny J", Client2.formatPerson(jennyJJones));
-
-		out = new StringWriter();
-		Client3.display(out, bobSmith);
-		assertEquals("Smith, Bob", out.toString());
-
-		out = new StringWriter();
-		Client3.display(out, jennyJJones);
-		assertEquals("Jones, Jenny J", out.toString());
-
-		assertEquals("Smith, Bob", Client4.toString(bobSmith));
-		assertEquals("Jones, Jenny J", Client4.toString(jennyJJones));
+		person.printPerson(out);
+		assertEquals("Patrik TimothyTomTOm Jagielski", out.toString());
+	}
+	@Test
+	public void testFormatPerson(){
+		String name = person.formatPerson();
+		assertEquals("Jagielski, Patrik TimothyTomTOm", name);
+	}
+	@Test
+	public void testDisplay() throws IOException {
+		StringWriter out = new StringWriter();
+		person.display(out);
+		assertEquals("Jagielski, Patrik TimothyTomTOm", out.toString());
+	}
+	@Test
+	public void testToString(){
+		String name = person.toString();
+		assertEquals("Jagielski, Patrik TimothyTomTOm", name);
 	}
 }

@@ -1,5 +1,5 @@
 
-
+//not needed
 public class Client2 {
 
 	public static String formatPerson(Person person) {

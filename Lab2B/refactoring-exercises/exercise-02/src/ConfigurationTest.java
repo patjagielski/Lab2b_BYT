@@ -1,64 +1,55 @@
+import org.junit.Before;
 import org.junit.Test;
-
-import java.io.*;
-import java.util.*;
+import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ConfigurationTest{
+	Configuration configuration;
+	@Before
+	public void before(){
+		int interval = 10;
+		int duration = 100;
+		int departure = 200;
 
+		configuration = new Configuration(interval, duration, departure);
+	}
 	@Test
-	public void testGoodInput() throws IOException {
-		String data = "interval = 10\nduration = 100\ndeparture = 200\n";
+	public void testGoodInput() {
 
-		Properties input = loadInput(data);
+		assertEquals(configuration.getInterval(), 10);
+		assertEquals(configuration.getDuration(), 100);
+		assertEquals(configuration.getDeparture(), 200);
+	}
+	@Test
+	public void testNegativeValues() {
+		configuration.setDeparture(-200);
+		configuration.setDuration(-100);
+		configuration.setInterval(-10);
 
-		Configuration props = new Configuration();
-		try {
-			props.load(input);
+		try{
+			configuration.load();
+			fail("should not be able to use negative values");
 		} catch (ConfigurationException e) {
-			assertTrue(false);
-			return;
+
+			assertTrue(true);
 		}
 
-		assertEquals(props.interval, 10);
-		assertEquals(props.duration, 100);
-		assertEquals(props.departure, 200);
 	}
 	@Test
-	public void testNegativeValues() throws IOException {
-		processBadInput("interval = -10\nduration = 100\ndeparture = 200\n");
-		processBadInput("interval = 10\nduration = -100\ndeparture = 200\n");
-		processBadInput("interval = 10\nduration = 100\ndeparture = -200\n");
-	}
-	@Test
-	public void testInvalidDuration() throws IOException {
-		processBadInput("interval = 10\nduration = 99\ndeparture = 200\n");
-	}
-	@Test
-	public void testInvalidDeparture() throws IOException {
-		processBadInput("interval = 10\nduration = 100\ndeparture = 199\n");
-	}
-	@Test
-	private void processBadInput(String data) throws IOException {
-		Properties input = loadInput(data);
+	public void testInvalidDuration() {
+		configuration.setDeparture(199);
+		configuration.setDuration(99);
+		configuration.setInterval(10);
 
-		boolean failed = false;
-		Configuration props = new Configuration();
-		try {
-			props.load(input);
+		try{
+			configuration.load();
+			fail("one of these values are invalid and should not be able to be processed");
 		} catch (ConfigurationException e) {
-			failed = true;
+
+			assertTrue(true);
 		}
-
-		assertTrue(failed);
 	}
-	@Test
-	private Properties loadInput(String data) throws IOException {
-		InputStream is = new StringBufferInputStream(data);
 
-		Properties input = new Properties();
-		input.load(is);
-		is.close();
 
-		return input;
-	}
 }

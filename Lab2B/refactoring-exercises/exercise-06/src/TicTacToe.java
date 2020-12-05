@@ -33,13 +33,35 @@ public class TicTacToe {
 
 	public char winner() {
 		// check for horizontal winner
+
+			// check for horizontal winner
+			Character c = getHorizontal();
+			if (c != null) return c;
+
+			// check for vertical winner
+			Character i = getVertical();
+			if (i != null) return i;
+
+			// check for diagonal winner
+			Character x = getDiagonal();
+			if (x != null) return x;
+
+			// no winner yet
+			return '-';
+
+	}
+
+	private Character getHorizontal() {
 		for (int i = 0; i < 9; i += 3) {
 			if (board.charAt(i) != '-'
 					&& board.charAt(i + 1) == board.charAt(i)
 					&& board.charAt(i + 2) == board.charAt(i))
 				return board.charAt(i);
 		}
+		return null;
+	}
 
+	public Character getVertical() {
 		// check for vertical winner
 		for (int i = 0; i < 3; ++i) {
 			if (board.charAt(i) != '-'
@@ -47,7 +69,10 @@ public class TicTacToe {
 					&& board.charAt(i + 6) == board.charAt(i))
 				return board.charAt(i);
 		}
+		return null;
+	}
 
+	public Character getDiagonal() {
 		// check for diagonal winner
 		if (board.charAt(0) != '-' && board.charAt(4) == board.charAt(0)
 				&& board.charAt(8) == board.charAt(0))
@@ -57,6 +82,7 @@ public class TicTacToe {
 			return board.charAt(2);
 
 		// no winner yet
-		return '-';
+		return null;
 	}
 }
+

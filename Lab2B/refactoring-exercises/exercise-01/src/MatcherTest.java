@@ -1,25 +1,32 @@
+import org.junit.Before;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class MatcherTest {
-
-	@Test
-	public void testMatch() {
-		Matcher matcher = new Matcher();
-
+	Matcher matcher;
+	@BeforeEach
+	public void before(){
 		int[] expected = new int[] { 10, 50, 30, 98 };
 		int clipLimit = 100;
 		int delta = 5;
-
 		int[] actual = new int[] { 12, 55, 25, 110 };
 
-		assertTrue(matcher.match(expected, actual, clipLimit, delta));
+		matcher = new Matcher(expected, actual, clipLimit, delta);
+	}
+	@Test
+	public void testMatch() {
 
-		actual = new int[] { 10, 60, 30, 98 };
-		assertTrue(!matcher.match(expected, actual, clipLimit, delta));
+		assertTrue(matcher.match());
 
-		actual = new int[] { 10, 50, 30 };
-		assertTrue(!matcher.match(expected, actual, clipLimit, delta));
+		matcher.actual = new int[] { 10, 60, 30, 98 };
+		assertFalse(matcher.match());
+
+		matcher.actual = new int[] { 10, 50, 30 };
+		assertFalse(matcher.match());
 	}
 }

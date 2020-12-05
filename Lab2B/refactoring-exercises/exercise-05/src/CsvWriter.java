@@ -3,8 +3,9 @@ public class CsvWriter {
 	}
 
 	public void write(String[][] lines) {
-		for (int i = 0; i < lines.length; i++)
+		for (int i = 0; i < lines.length; i++) {
 			writeLine(lines[i]);
+		}
 	}
 
 	private void writeLine(String[] fields) {

@@ -11,6 +11,11 @@ public class Client1 {
 			out.write(" ");
 		}
 		out.write(person.last);
+
+	}
+	public static String toString(Person person) {
+		return person.last + ", " + person.first
+				+ ((person.middle == null) ? "" : " " + person.middle);
 	}
 
 }
